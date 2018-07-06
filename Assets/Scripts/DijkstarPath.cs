@@ -23,23 +23,16 @@ struct NodeRecord
     }
 }
 
-public class DijkstarPath : MonoBehaviour {
+public class DijkstarPath {
 
     private List<NodeRecord> openList;
     private List<NodeRecord> closedList;
 
-	// Use this for initialization
-	void Start () {
-		
-	}
 	
-	// Update is called once per frame
-	void Update () {
-		
-	}
-
-    public void DijkstarPathFind(Graph graph, Node start, Node end)
+    public List<Connection> DijkstarPathFind(Graph graph, Node start, Node end)
     {
+        List<Connection> path = new List<Connection>();
+
         NodeRecord current = new NodeRecord();
 
         List<Connection> currentConnections = new List<Connection>();
@@ -108,15 +101,27 @@ public class DijkstarPath : MonoBehaviour {
         }
         else
         {
-            List<Connection> path = new List<Connection>();
+            
+            Node temp = new Node();
 
 
             while(current.node != start)
             {
                 path.Add(current.connection);
+                temp = current.connection.FromNode;
+
+                for (int i = closedList.Count - 1;  i >= 0; i--)
+                {
+                    if (closedList[i].node == temp)
+                    {
+                        current = closedList[i];
+                    }
+                }
                 
             }
         }
+
+        return path;
     }
 
     NodeRecord SmallestElement(List<NodeRecord> list)
