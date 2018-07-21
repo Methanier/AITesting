@@ -147,7 +147,7 @@ MonoBehaviour:
     - {fileID: 1388681968}
     - {fileID: 76568486}
   start: {fileID: 164692600}
-  end: {fileID: 1388681968}
+  end: {fileID: 76568486}
   path: []
 --- !u!4 &72417290
 Transform:

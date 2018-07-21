@@ -12057,12 +12057,6 @@ Transform:
   m_PrefabParentObject: {fileID: 4544759818829826, guid: d55225d8dd4d11c42847b2d6a8b5e86c,
     type: 2}
   m_PrefabInternal: {fileID: 1224328691}
---- !u!114 &1173917909 stripped
-MonoBehaviour:
-  m_PrefabParentObject: {fileID: 114768553968361716, guid: 0c1c3d91c51af2248a75843bb1ff19b6,
-    type: 2}
-  m_PrefabInternal: {fileID: 715855107}
-  m_Script: {fileID: 11500000, guid: 136e5e45229a636448931e19f20fe9a0, type: 3}
 --- !u!1001 &1224328691
 Prefab:
   m_ObjectHideFlags: 0
@@ -12159,11 +12153,17 @@ MonoBehaviour:
   graph:
     nodes: []
   start: {fileID: 1456213368}
-  end: {fileID: 1173917909}
+  end: {fileID: 1517208124}
   path: []
 --- !u!114 &1456213368 stripped
 MonoBehaviour:
   m_PrefabParentObject: {fileID: 114307156424204580, guid: 0c1c3d91c51af2248a75843bb1ff19b6,
+    type: 2}
+  m_PrefabInternal: {fileID: 715855107}
+  m_Script: {fileID: 11500000, guid: 136e5e45229a636448931e19f20fe9a0, type: 3}
+--- !u!114 &1517208124 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 114754681076533330, guid: 0c1c3d91c51af2248a75843bb1ff19b6,
     type: 2}
   m_PrefabInternal: {fileID: 715855107}
   m_Script: {fileID: 11500000, guid: 136e5e45229a636448931e19f20fe9a0, type: 3}
