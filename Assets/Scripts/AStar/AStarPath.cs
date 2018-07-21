@@ -6,13 +6,15 @@ struct AStarNodeRecord
 {
     public AStarNode node;
     public AStarConnection connection;
-    public int costSoFar;
+    public float costSoFar;
+    public float estimatedTotalCost;
 
-    public AStarNodeRecord(AStarNode inNode, AStarConnection con, int cost)
+    public AStarNodeRecord(AStarNode inNode, AStarConnection con, float cost, float estimate)
     {
         this.node = inNode;
         this.connection = con;
         this.costSoFar = cost;
+        this.estimatedTotalCost = estimate;
     }
 
     public AStarNodeRecord(AStarNodeRecord record)
@@ -20,6 +22,7 @@ struct AStarNodeRecord
         this.node = record.node;
         this.connection = record.connection;
         this.costSoFar = record.costSoFar;
+        this.estimatedTotalCost = record.estimatedTotalCost;
     }
 }
 
@@ -30,7 +33,7 @@ public class AStarPath
     private List<AStarNodeRecord> closedList;
 
 
-    public List<AStarConnection> DijkstarPathFind(AStarGraph graph, AStarNode start, AStarNode end)
+    public List<AStarConnection> AStarPathFind(AStarGraph graph, AStarNode start, AStarNode end)
     {
         List<AStarConnection> path = new List<AStarConnection>();
 
@@ -41,12 +44,15 @@ public class AStarPath
         AStarNodeRecord endNode = new AStarNodeRecord();
         AStarNodeRecord endNodeRecord = new AStarNodeRecord();
 
+        float endNodeHeuristic = 0;
+
 
 
         AStarNodeRecord startRecord = new AStarNodeRecord();
         startRecord.node = start;
         startRecord.connection = null;
         startRecord.costSoFar = 0;
+        startRecord.estimatedTotalCost = Heuristic(start, end);
 
         openList = new List<AStarNodeRecord>();
         openList.Add(startRecord);
@@ -70,7 +76,17 @@ public class AStarPath
 
                 if (closedList.Contains(endNode))
                 {
-                    //continue
+                    endNodeRecord = closedList.Find(x => closedList.Contains(endNode));
+
+                    if(endNodeRecord.costSoFar <= endNode.costSoFar)
+                    {
+                        //continue
+                    }
+                    else
+                    {
+                        closedList.Remove(endNodeRecord);
+                        endNodeHeuristic = endNodeRecord.estimatedTotalCost - endNodeRecord.costSoFar;
+                    }
                 }
                 else if (openList.Contains(endNode))
                 {
@@ -80,11 +96,20 @@ public class AStarPath
                     {
                         //continue
                     }
+                    else
+                    {
+                        endNodeHeuristic = endNodeRecord.estimatedTotalCost - endNodeRecord.costSoFar;
+                    }
                 }
                 else
                 {
                     endNodeRecord = new AStarNodeRecord(endNode);
+                    endNodeHeuristic = Heuristic(endNode.node, end);
                 }
+
+                endNodeRecord.costSoFar = endNode.costSoFar;
+                endNodeRecord.connection = endNode.connection;
+                endNodeRecord.estimatedTotalCost = endNodeRecord.costSoFar + endNodeHeuristic;
 
                 if (!openList.Contains(endNode))
                 {
@@ -121,6 +146,7 @@ public class AStarPath
 
             }
         }
+        path.Reverse();
 
         return path;
     }
@@ -129,24 +155,27 @@ public class AStarPath
     {
         AStarNodeRecord result = new AStarNodeRecord();
 
-        AStarNodeRecord temp = new AStarNodeRecord();
-
-        temp = list[0];
+        result = list[0];
 
         for (int i = 0; i < list.Count; i++)
         {
-            foreach (AStarConnection con in list[i].node.GetConnections())
+            if(list[i].estimatedTotalCost < result.estimatedTotalCost)
             {
-                if (con.Cost < temp.costSoFar)
-                {
-                    temp = list[i];
-                    temp.costSoFar = con.Cost;
-                }
+                result = list[i];
             }
         }
 
-        result = temp;
-
         return result;
     }
+
+    float Heuristic(AStarNode start, AStarNode end)
+    {
+        Vector3 diference = start.transform.position - end.transform.position;
+
+        float mag = diference.magnitude;
+
+        return mag;
+    }
 }
+
+
