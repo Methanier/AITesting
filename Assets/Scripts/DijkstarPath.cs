@@ -90,7 +90,7 @@ public class DijkstarPath {
                     openList.Add(endNodeRecord);
                 }
             }
-
+            
             openList.Remove(current);
             closedList.Add(current);
         }
@@ -102,7 +102,7 @@ public class DijkstarPath {
         else
         {
             
-            Node temp = new Node();
+            Node temp;
 
 
             while(current.node != start)
@@ -121,6 +121,8 @@ public class DijkstarPath {
             }
         }
 
+        path.Reverse();
+
         return path;
     }
 
@@ -132,14 +134,16 @@ public class DijkstarPath {
 
         temp = list[0];
 
+        int tempCost = list[0].node.GetConnections()[0].Cost;
+
         for(int i = 0; i < list.Count; i++)
         {
             foreach(Connection con in list[i].node.GetConnections())
             {
-                if(con.Cost < temp.costSoFar)
+                if(con.Cost < tempCost)
                 {
                     temp = list[i];
-                    temp.costSoFar = con.Cost;
+                    tempCost = con.Cost;
                 }
             }
         }
